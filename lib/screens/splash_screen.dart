@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
+import 'package:recetasapp/screens/home_screen.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-
   @override
   State<StatefulWidget> createState() => _SplashScreenState();
 }

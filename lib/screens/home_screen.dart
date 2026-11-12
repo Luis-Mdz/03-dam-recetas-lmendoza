@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:recetasapp/models/receta.dart';
-import 'package:recetasapp/services/recipe_service.dart/';
+import 'package:recetasapp/screens/detalle_receta_screen.dart';
+import 'package:recetasapp/services/recipe_service.dart';
 import 'package:recetasapp/widgets/receta_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -13,7 +13,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final RecipeService _recipeService = RecipeService();
   late Future<List<Receta>> _futureRecetas;
-
   @override
   void initState() {
     super.initState();
@@ -26,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('RecetasApp'),
         backgroundColor: const Color.fromARGB(255, 80, 23, 3),
-      ),
+      ), // AppBar
       body: FutureBuilder<List<Receta>>(
         future: _futureRecetas,
         builder: (context, snapshot) {
@@ -41,11 +40,22 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(vertical: 8),
             itemCount: recetas.length,
             itemBuilder: (context, index) {
-              return RecetaCard(receta: recetas[index]);
+              return RecetaCard(
+                receta: recetas[index],
+                onTap: () async {   // PARTE AGREGADA INICIA AQUÍ
+                  final bool? esFavorita = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DetalleRecetaScreen(receta: recetas[index]),
+                    ), // MaterialPageRoute
+                  );
+                }, // PARTE AGREGADA TERMINA AQUÍ
+              ); // RecetaCard
             },
-          );
+          ); // ListView.builder
         },
-      ),
-    );
+      ), // FutureBuilder
+    ); // Scaffold
   }
 }
